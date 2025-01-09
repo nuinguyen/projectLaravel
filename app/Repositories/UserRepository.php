@@ -3,9 +3,10 @@
 namespace App\Repositories;
 
 use App\Models\User;
+use App\Repositories\BaseRepository;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 
-class UserRepository implements UserRepositoryInterface
+class UserRepository extends BaseRepository implements UserRepositoryInterface
 {
     protected $model;
     
@@ -13,42 +14,14 @@ class UserRepository implements UserRepositoryInterface
     {
         $this->model = $model;
     }
-    
-    // Lấy tất cả records
-    public function all()
+
+    /**
+     * Sử dụng 1 số function thường xuyên lặp lại của BaseRepossitory
+     * Có thể viết thêm function khác riêng biệt của model
+     */
+    public function getUsersByRole($role)
     {
-        return $this->model->all();
+        return $this->model->where('role', $role)->get();
     }
-    
-    // Tạo record mới
-    public function create(array $data)
-    {
-        return $this->model->create($data);
-    }
-    
-    // Tìm record theo id
-    public function find($id)
-    {
-        return $this->model->findOrFail($id);
-    }
-    
-    // Cập nhật record
-    public function update($id, array $data)
-    {
-        $record = $this->find($id);
-        $record->update($data);
-        return $record;
-    }
-    
-    // Xóa record
-    public function delete($id)
-    {
-        return $this->find($id)->delete();
-    }
-    
-    // Tìm kiếm có điều kiện
-    public function where($column, $value)
-    {
-        return $this->model->where($column, $value);
-    }
+  
 }
